@@ -1,4 +1,4 @@
-# Food Ordering Web Application
+# FoodieHub
 
 A full-stack food ordering application built with the MERN stack during the **WebStack Academy internship**. Users can discover restaurants, browse menus, manage a cart, authenticate securely, place orders, and complete payments through Stripe.
 

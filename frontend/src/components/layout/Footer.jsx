@@ -5,7 +5,7 @@ const Footer = () => {
     <>
       <footer>
         <p className="text-center">
-          Food Delivery Website - 2023-2024, All Rights Reserved..
+          FoodieHub &copy; 2026. All rights reserved.
         </p>
       </footer>
     </>
