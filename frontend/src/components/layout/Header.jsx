@@ -28,7 +28,7 @@ const Header = () => {
         {/* logo */}
         <div className="col-12 col-md-3">
           <Link to="/">
-            <img src="/images/logo.webp" alt="logo" className="logo" />
+            <span className="brand-text">Foodie<span>Hub</span></span>
           </Link>
         </div>
 

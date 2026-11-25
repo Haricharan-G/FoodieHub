@@ -1076,3 +1076,6 @@ ul.CTAs a {
   border: none;
   outline: none;
 }
+
+.brand-text { display: inline-block; color: #fff; font-size: 1.8rem; font-weight: 700; letter-spacing: 0.5px; margin-left: 20%; }
+.brand-text span { color: #ffd54f; }
