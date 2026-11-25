@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js",
-    "seeder": "node utils/seeder.js"
+    "dev": "nodemon server.js"
   },
   "author": "Hari",
   "license": "ISC",
