@@ -8,6 +8,7 @@ import {
 import {
   createRestaurant,
   getRestaurants,
+  getNearbyRestaurants,
 } from "../redux/actions/restaurantAction";
 import Restaurant from "./Restaurant";
 import Loader from "./layout/Loader";
@@ -30,6 +31,54 @@ const Home = () => {
   } = useSelector((state) => state.restaurants);
 
   const { isAuthenticated, user } = useSelector((state) => state.user);
+
+  // nearby restaurants
+  const [radius, setRadius] = useState(5);
+  const [coords, setCoords] = useState(null);
+  const [locating, setLocating] = useState(false);
+  const [nearbyRequested, setNearbyRequested] = useState(false);
+  const [geoError, setGeoError] = useState("");
+
+  const handleNearMe = () => {
+    setGeoError("");
+
+    if (!navigator.geolocation) {
+      setGeoError("Your browser does not support location access.");
+      return;
+    }
+
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocating(false);
+        setCoords({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+        setNearbyRequested(true);
+      },
+      () => {
+        setLocating(false);
+        setGeoError(
+          "Could not get your location. Please allow location access and try again.",
+        );
+      },
+      { timeout: 10000 },
+    );
+  };
+
+  const handleShowAll = () => {
+    setNearbyRequested(false);
+    setGeoError("");
+    dispatch(getRestaurants(keyword));
+  };
+
+  // (re)load nearby restaurants when the location or radius changes
+  useEffect(() => {
+    if (nearbyRequested && coords) {
+      dispatch(getNearbyRestaurants({ ...coords, radius }));
+    }
+  }, [dispatch, nearbyRequested, coords, radius]);
 
   useEffect(() => {
     dispatch(getRestaurants(keyword));
@@ -129,6 +178,36 @@ const Home = () => {
       ) : (
         <>
           <section>
+            <div className="nearby-bar">
+              <button
+                className="nearby-btn"
+                onClick={handleNearMe}
+                disabled={locating}
+              >
+                {locating ? "Locating..." : "📍 Near me"}
+              </button>
+
+              <select
+                className="nearby-radius"
+                value={radius}
+                onChange={(e) => setRadius(Number(e.target.value))}
+              >
+                {[2, 5, 10, 25].map((km) => (
+                  <option key={km} value={km}>
+                    Within {km} km
+                  </option>
+                ))}
+              </select>
+
+              {nearbyRequested && (
+                <button className="nearby-btn" onClick={handleShowAll}>
+                  Show all
+                </button>
+              )}
+            </div>
+
+            {geoError && <Message variant="danger">{geoError}</Message>}
+
             <div className="sort">
               <button className="sort_veg p-3" onClick={handleToggleVegOnly}>
                 {showVegOnly ? "Show All" : "Pure Veg"}
@@ -152,7 +231,11 @@ const Home = () => {
                   ) : null,
                 )
               ) : (
-                <Message variant="info"> No restaurants Found. </Message>
+                <Message variant="info">
+                  {nearbyRequested
+                    ? `No restaurants within ${radius} km. Try a bigger radius.`
+                    : "No restaurants Found."}
+                </Message>
               )}
 
               {/* admin add restaurant button */}
@@ -214,13 +297,13 @@ const Home = () => {
                     </div>
 
                     <div className="form-group">
-                      <label>Coordinates (lat,lng)</label>
+                      <label>Coordinates (longitude,latitude)</label>
                       <input
                         type="text"
                         name="coordinates"
                         value={coordsInput}
                         onChange={handleChange}
-                        placeholder="e.g. 40.77,-73.97"
+                        placeholder="e.g. 77.59,12.97"
                         required
                       />
                     </div>

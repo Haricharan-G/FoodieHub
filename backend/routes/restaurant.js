@@ -3,6 +3,7 @@ const router = express.Router({ mergeParams: true });
 
 const {
   getAllRestaurants,
+  getNearbyRestaurants,
   createRestaurant,
   getRestaurant,
   deleteRestaurant,
@@ -12,6 +13,9 @@ const { protect } = require("../controllers/authController");
 const { authorizeRoles } = require("../middlewares/authorizeRoles");
 
 const menuRoutes = require("./menu");
+
+// must be declared BEFORE "/:storeId", otherwise "nearby" is read as an id
+router.route("/nearby").get(getNearbyRestaurants);
 
 router
   .route("/")

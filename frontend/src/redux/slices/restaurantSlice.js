@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getRestaurants, createRestaurant,deleteRestaurant, analyzeReviews } from "../actions/restaurantAction";
+import { getRestaurants, getNearbyRestaurants, createRestaurant,deleteRestaurant, analyzeReviews } from "../actions/restaurantAction";
 
 const initialState = {
     restaurants : [],
@@ -50,6 +50,21 @@ const restaurantSlice = createSlice({
         .addCase(getRestaurants.rejected,(state,action) =>{
             state.loading = false;
             state.error = action.payload || "Failed to fetch restaurants";
+        })
+
+        //NEARBY
+        .addCase(getNearbyRestaurants.pending,(state) =>{
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(getNearbyRestaurants.fulfilled,(state,action) =>{
+            state.loading = false;
+            state.restaurants = action.payload.restaurants;
+            state.count = action.payload.count;
+        })
+        .addCase(getNearbyRestaurants.rejected,(state,action) =>{
+            state.loading = false;
+            state.error = action.payload || "Failed to fetch nearby restaurants";
         })
 
         // CREATE

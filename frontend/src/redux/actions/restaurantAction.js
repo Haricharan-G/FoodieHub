@@ -23,7 +23,22 @@ export const getRestaurants = createAsyncThunk(
        }
     })
 
- //create restaurant - admin
+ // get restaurants near a location (closest first, each has distanceKm)
+export const getNearbyRestaurants = createAsyncThunk(
+  "restaurants/getNearbyRestaurants",
+  async ({ lat, lng, radius = 5 }, { rejectWithValue }) => {
+    try {
+      const { data } = await api.get("/v1/eats/stores/nearby", {
+        params: { lat, lng, radius },
+      });
+      return { restaurants: data.restaurants, count: data.count };
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+//create restaurant - admin
  
  export const createRestaurant = createAsyncThunk(
   "restaurants/createRestaurant", async(restaurantData,{rejectWithValue}) =>{

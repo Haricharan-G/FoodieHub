@@ -39,6 +39,10 @@ const Restaurant = ({ restaurant }) => {
       {restaurant.address}
     </p>
 
+    {restaurant.distanceKm !== undefined && (
+      <p className="rest_distance">📍 {restaurant.distanceKm} km away</p>
+    )}
+
     <div className="ratings">
       <div className="rating-outer">
         <div
