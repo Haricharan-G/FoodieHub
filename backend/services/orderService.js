@@ -149,7 +149,11 @@ exports.fulfillCheckoutSession = async (session) => {
     return order;
   }
 
+  // newer Stripe API versions moved the shipping address to collected_information
   const address =
+    (session.collected_information &&
+      session.collected_information.shipping_details &&
+      session.collected_information.shipping_details.address) ||
     (session.shipping_details && session.shipping_details.address) ||
     (session.customer_details && session.customer_details.address) ||
     {};

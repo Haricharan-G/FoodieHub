@@ -23,7 +23,13 @@ exports.stripeWebhook = async (req, res) => {
       event.type === "checkout.session.completed" ||
       event.type === "checkout.session.async_payment_succeeded"
     ) {
-      await fulfillCheckoutSession(event.data.object);
+      // Re-fetch the session with our own Stripe client. The event payload uses
+      // the API version of the webhook destination (which can be newer than the
+      // version this SDK uses), so field names such as shipping_details may differ.
+      const session = await stripe.checkout.sessions.retrieve(
+        event.data.object.id
+      );
+      await fulfillCheckoutSession(session);
     }
     res.status(200).json({ received: true });
   } catch (err) {
