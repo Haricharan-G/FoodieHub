@@ -11,6 +11,7 @@ import {
   getNearbyRestaurants,
 } from "../redux/actions/restaurantAction";
 import Restaurant from "./Restaurant";
+import RestaurantMap from "./RestaurantMap";
 import Loader from "./layout/Loader";
 import Message from "./Message";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,6 +39,7 @@ const Home = () => {
   const [locating, setLocating] = useState(false);
   const [nearbyRequested, setNearbyRequested] = useState(false);
   const [geoError, setGeoError] = useState("");
+  const [showMap, setShowMap] = useState(true);
 
   const handleNearMe = () => {
     setGeoError("");
@@ -200,13 +202,31 @@ const Home = () => {
               </select>
 
               {nearbyRequested && (
-                <button className="nearby-btn" onClick={handleShowAll}>
-                  Show all
-                </button>
+                <>
+                  <button
+                    className="nearby-btn"
+                    onClick={() => setShowMap((v) => !v)}
+                  >
+                    {showMap ? "Hide map" : "🗺️ Show map"}
+                  </button>
+                  <button className="nearby-btn" onClick={handleShowAll}>
+                    Show all
+                  </button>
+                </>
               )}
             </div>
 
             {geoError && <Message variant="danger">{geoError}</Message>}
+
+            {nearbyRequested && coords && showMap && (
+              <RestaurantMap
+                userLocation={coords}
+                radiusKm={radius}
+                restaurants={(restaurants || []).filter(
+                  (r) => !showVegOnly || r.isVeg,
+                )}
+              />
+            )}
 
             <div className="sort">
               <button className="sort_veg p-3" onClick={handleToggleVegOnly}>

@@ -1097,3 +1097,19 @@ ul.CTAs a {
 .nearby-btn:disabled { opacity: 0.6; cursor: default; }
 .nearby-radius { border: 1px solid #ccc; border-radius: 20px; padding: 7px 12px; background: #fff; }
 .rest_distance { color: #056a3a; font-weight: 600; margin: 2px 0 6px; font-size: 0.9rem; }
+
+/* nearby restaurants map */
+.restaurant-map-wrap {
+  margin: 16px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+.restaurant-map {
+  height: 380px;
+  width: 100%;
+  z-index: 0;
+}
+@media (max-width: 576px) {
+  .restaurant-map { height: 300px; }
+}
