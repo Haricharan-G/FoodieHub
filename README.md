@@ -2,7 +2,9 @@
 
 A full-stack food ordering web application built with the **MERN stack**. Customers can discover restaurants, browse menus, manage a cart and pay online with **Stripe**. Admins manage restaurants, menus and food items.
 
-<!-- Live demo: add your deployed link here once the app is deployed -->
+**Live demo:** https://foodie-hub-azure-one.vercel.app
+
+> The demo runs Stripe in test mode, so no real money is charged. Pay with the test card `4242 4242 4242 4242` (any future expiry, any CVC). The free backend sleeps when idle, so the first load can take up to a minute.
 
 <!-- Screenshots: add images to docs/screenshots/ and link them here, e.g.
 ![Home](docs/screenshots/home.png)
@@ -87,8 +89,8 @@ foodiehub/
 ### 1. Install
 
 ```bash
-git clone https://github.com/<your-username>/<your-repo>.git
-cd <your-repo>
+git clone https://github.com/Haricharan-G/FoodieHub.git
+cd FoodieHub
 
 cd backend && npm install
 cd ../frontend && npm install
